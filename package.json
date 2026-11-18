@@ -1,0 +1,9 @@
+{
+  "name": "console-service-booking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Console service booking website (Vercel + MongoDB Atlas)",
+  "engines": { "node": ">=18" },
+  "scripts": { "dev": "node scripts/dev.js", "seed": "node scripts/seed.js" },
+  "dependencies": { "mongodb": "^6.8.0" }
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e1a;--panel:#111830;--panel2:#172042;--line:#26335a;--text:#eef2fb;--mute:#93a0c2;--blue:#3b82ff;--x:#6ea0ff;--tri:#5fe0a6;--bad:#ff7b88;--d:'Chakra Petch',system-ui,sans-serif;--b:'Figtree',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}body{font:15px/1.5 var(--b);color:var(--text);background:var(--bg)}
+button{font:inherit;color:inherit;cursor:pointer}:focus-visible{outline:3px solid #fff;outline-offset:2px}
+h2,h3{font-family:var(--d)}
+.btn{border:2px solid var(--blue);background:var(--blue);color:#fff;padding:9px 16px;font-weight:600;border-radius:8px}.btn:hover{background:transparent}
+.btn.ghost{background:transparent;border-color:var(--line)}.btn.ghost:hover{border-color:var(--x)}.btn.sm{padding:5px 10px;font-size:13px}
+.btn.red{background:transparent;border-color:var(--bad);color:var(--bad)}.btn.red:hover{background:var(--bad);color:#000}
+input,select,textarea{width:100%;font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:var(--mute)}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+header b{font:700 20px var(--d)}main{max-width:1180px;margin:0 auto;padding:22px 20px 60px}
+#login{max-width:340px;margin:14vh auto;padding:0 20px;text-align:center}#login input{margin:14px 0}
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}.tabs button{border:1px solid var(--line);background:transparent;padding:8px 16px;border-radius:99px;font-weight:600}
+.tabs button[aria-selected=true]{background:var(--blue);border-color:var(--blue)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);padding:14px;border-radius:10px}.stat b{font:700 28px var(--d);display:block}.stat span{color:var(--mute);font-size:13px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.bar>*{width:auto}.bar input{flex:1;min-width:180px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}th{font-size:12px;color:var(--mute)}
+a{color:var(--x)}.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--x);color:var(--x)}
+.badge.confirmed,.badge.completed{background:var(--tri);color:#04210f;border-color:var(--tri)}.badge.cancelled{color:var(--mute);border-color:var(--mute);text-decoration:line-through}
+.acts{display:flex;gap:6px;flex-wrap:wrap}.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.msg{min-height:20px;font-size:14px;margin:8px 0;color:var(--tri)}.msg.err{color:var(--bad)}.empty{padding:30px;text-align:center;color:var(--mute)}
+@media(max-width:760px){table,thead,tbody,tr,td{display:block}thead{display:none}tr{border:1px solid var(--line);border-radius:8px;margin-bottom:10px;padding:6px}td{border:0;padding:4px 8px}}
+</style></head><body>
+<div id="login" hidden><h2>Admin</h2><form id="lf"><input id="pw" type="password" placeholder="Password" autocomplete="current-password" required><button class="btn" style="width:100%">Log in</button></form><div class="msg err" id="lm"></div></div>
+<div id="app" hidden>
+<header><b>Bookings admin</b><div><a class="btn ghost sm" href="/" style="text-decoration:none;color:inherit">View site</a> <button class="btn sm" id="out">Log out</button></div></header>
+<main>
+<div class="tabs" role="tablist"><button role="tab" data-t="bk" aria-selected="true">Bookings</button><button role="tab" data-t="add" aria-selected="false">Add booking</button><button role="tab" data-t="sv" aria-selected="false">Services &amp; prices</button><button role="tab" data-t="bl" aria-selected="false">Days off</button></div>
+<div id="t-bk"><div class="stats" id="stats"></div>
+<div class="bar"><input id="q" placeholder="Search name, phone, ref, address"><select id="fs"><option value="all">All</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select><input id="fd" type="date" style="max-width:170px"></div>
+<table><thead><tr><th>Ref</th><th>Customer</th><th>Service</th><th>When &amp; where</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+<div id="t-add" hidden><div class="card"><h3 style="margin-bottom:12px">Add a walk-in or Messenger booking</h3><div class="g">
+<div><label>Service</label><select id="aSvc"></select></div><div><label>Console</label><select id="aCon"></select></div><div><label>Storage</label><select id="aSto"></select></div>
+<div><label>Date</label><input id="aDate" type="date"></div><div><label>Time</label><select id="aSlot"></select></div><div><label>Where</label><select id="aMode"><option value="home">Home visit</option><option value="shop">Drop-off at shop</option></select></div>
+<div><label>Area</label><select id="aArea"></select></div><div><label>Address</label><input id="aAddr"></div><div><label>Name</label><input id="aName"></div><div><label>Mobile</label><input id="aPhone" type="tel"></div></div>
+<div class="msg" id="aMsg"></div><button class="btn" id="aGo">Save booking</button></div></div>
+<div id="t-sv" hidden><div id="svList"></div><div class="card"><h3 style="margin-bottom:12px">Add a service</h3><div class="g"><div><label>Name</label><input id="nName"></div><div><label>Price (₱)</label><input id="nPrice" type="number" min="0"></div></div><div style="margin-top:10px"><label>Description</label><input id="nDesc"></div><div class="msg" id="nMsg"></div><button class="btn" id="nGo">Add service</button></div></div>
+<div id="t-bl" hidden><div class="card"><h3 style="margin-bottom:8px">Mark a day off</h3><p style="color:var(--mute);margin-bottom:12px">Customers cannot book that day. Existing bookings stay as they are.</p><div class="g"><div><label>Date</label><input id="bDate" type="date"></div><div><label>Reason</label><input id="bWhy" placeholder="e.g. Holiday"></div></div><div class="msg" id="bMsg"></div><button class="btn" id="bGo">Block day</button></div>
+<div class="card"><h3 style="margin-bottom:8px">Upcoming days off</h3><div id="bList"></div></div></div>
+</main></div>
+<script>
+const $=s=>document.querySelector(s),peso=n=>'₱'+Number(n||0).toLocaleString('en-PH');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function api(a,body,q=''){const r=await fetch('/api/admin?action='+a+q,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{});let j={};try{j=await r.json()}catch{}if(j.login)showLogin();return j}
+const fd=s=>new Date(s+'T00:00:00Z').toLocaleDateString('en-PH',{timeZone:'UTC',weekday:'short',month:'short',day:'numeric'});
+let opt={consoles:[],areas:[],slots:[]};
+function showLogin(){$('#app').hidden=true;$('#login').hidden=false}
+async function boot(){const j=await api('me');if(!j.success){showLogin();return}$('#login').hidden=true;$('#app').hidden=false;opt=await api('options');await loadSvc();fillAdd();loadBookings()}
+$('#lf').onsubmit=async e=>{e.preventDefault();$('#lm').textContent='';const j=await api('login',{password:$('#pw').value});if(j.success){$('#pw').value='';boot()}else $('#lm').textContent=j.error||'Could not log in.'};
+$('#out').onclick=async()=>{await api('logout',{});showLogin()};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));['bk','add','sv','bl'].forEach(t=>$('#t-'+t).hidden=t!==b.dataset.t);if(b.dataset.t==='bl')loadBlocks()});
+async function loadBookings(){
+  const q=new URLSearchParams({q:$('#q').value,status:$('#fs').value,date:$('#fd').value}).toString();const j=await api('bookings',null,'&'+q);if(!j.success)return;
+  $('#stats').innerHTML=[['Pending',j.counts.pending],['Confirmed',j.counts.confirmed],['Completed',j.counts.completed],['Cancelled',j.counts.cancelled],['Revenue',peso(j.revenue)]].map(([a,b])=>`<div class="stat"><b>${b||0}</b><span>${a}</span></div>`).join('');
+  $('#rows').innerHTML=j.bookings.length?j.bookings.map(b=>{const A=[];if(b.status==='pending')A.push(['confirmed','Confirm','']);if(b.status==='confirmed')A.push(['completed','Mark done','']);if(['pending','confirmed'].includes(b.status))A.push(['cancelled','Cancel','red']);
+   return `<tr><td><b>${esc(b.ref)}</b><br><small style="color:var(--mute)">${esc(b.source)}</small></td><td>${esc(b.name)}<br><a href="tel:${esc(b.phone)}">${esc(b.phone)}</a>${b.facebook?'<br>FB: '+esc(b.facebook):''}${b.notes?'<br><i>'+esc(b.notes)+'</i>':''}</td><td>${esc(b.service_name)}<br><small>${esc(b.console_name)} ${esc(b.storage)}</small></td><td>${fd(b.date)}, ${esc(b.time_label)}<br><small>${b.mode==='shop'?'Drop-off at shop':esc(b.area_name)+'<br>'+esc(b.address)+(b.landmark?' ('+esc(b.landmark)+')':'')}</small></td><td>${peso(b.total)}<br><small>${b.travel_fee?'incl. '+peso(b.travel_fee)+' travel':''}</small></td><td><span class="badge ${b.status}">${b.status}</span></td><td><div class="acts">${A.map(a=>`<button class="btn sm ${a[2]||'ghost'}" data-r="${esc(b.ref)}" data-s="${a[0]}">${a[1]}</button>`).join('')}</div></td></tr>`}).join(''):'<tr><td colspan="7" class="empty">No bookings found.</td></tr>';
+  document.querySelectorAll('[data-s]').forEach(x=>x.onclick=async()=>{if(x.dataset.s==='cancelled'&&!confirm('Cancel '+x.dataset.r+'? The time slot opens up again.'))return;await api('set_status',{ref:x.dataset.r,status:x.dataset.s});loadBookings()});
+}
+let tm;['q','fs','fd'].forEach(id=>$('#'+id).oninput=()=>{clearTimeout(tm);tm=setTimeout(loadBookings,250)});
+let svcs=[];
+async function loadSvc(){const j=await api('services');if(!j.success)return;svcs=j.services;
+  $('#svList').innerHTML=svcs.map(s=>`<div class="card" data-id="${esc(s.id)}"><div class="g"><div><label>Name</label><input class="sN" value="${esc(s.name)}"></div><div><label>Price (₱)</label><input class="sP" type="number" min="0" value="${s.price}"></div><div style="display:flex;align-items:end"><label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" class="sA" style="width:auto" ${s.active?'checked':''}> Shown on site</label></div></div><div style="margin-top:10px"><label>Description</label><input class="sD" value="${esc(s.description)}"></div><div class="msg"></div><button class="btn sSave">Save</button></div>`).join('');
+  document.querySelectorAll('.sSave').forEach(b=>b.onclick=async()=>{const el=b.closest('.card'),j=await api('save_service',{id:el.dataset.id,name:el.querySelector('.sN').value,price:el.querySelector('.sP').value,description:el.querySelector('.sD').value,active:el.querySelector('.sA').checked}),m=el.querySelector('.msg');m.className='msg'+(j.success?'':' err');m.textContent=j.success?'Saved.':(j.error||'Could not save.')});
+  $('#aSvc').innerHTML=svcs.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('')}
+$('#nGo').onclick=async()=>{const j=await api('save_service',{name:$('#nName').value,price:$('#nPrice').value,description:$('#nDesc').value,active:true});const m=$('#nMsg');m.className='msg'+(j.success?'':' err');m.textContent=j.success?'Added.':(j.error||'Could not add.');if(j.success){$('#nName').value=$('#nPrice').value=$('#nDesc').value='';loadSvc()}};
+function fillAdd(){$('#aCon').innerHTML=opt.consoles.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#aSlot').innerHTML=opt.slots.map(s=>`<option value="${s.id}">${esc(s.label)}</option>`).join('');$('#aArea').innerHTML=opt.areas.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
+  const st=()=>{const c=opt.consoles.find(x=>x.id===$('#aCon').value);$('#aSto').innerHTML=c.storage.map(s=>`<option>${esc(s)}</option>`).join('')};$('#aCon').onchange=st;st()}
+$('#aGo').onclick=async()=>{const j=await api('add_booking',{service_id:$('#aSvc').value,console_id:$('#aCon').value,storage:$('#aSto').value,date:$('#aDate').value,slot_id:$('#aSlot').value,mode:$('#aMode').value,area_id:$('#aArea').value,address:$('#aAddr').value,name:$('#aName').value,phone:$('#aPhone').value});const m=$('#aMsg');m.className='msg'+(j.success?'':' err');m.textContent=j.success?'Saved as '+j.ref+'.':(j.error||'Could not save.');if(j.success)loadBookings()};
+async function loadBlocks(){const j=await api('blocks');if(!j.success)return;$('#bList').innerHTML=j.blocks.length?'<table><tbody>'+j.blocks.map(b=>`<tr><td>${fd(b.date)}</td><td>${esc(b.reason)}</td><td><button class="btn sm ghost" data-d="${b.date}">Unblock</button></td></tr>`).join('')+'</tbody></table>':'<div class="empty">No days off set.</div>';
+  document.querySelectorAll('[data-d]').forEach(x=>x.onclick=async()=>{await api('unblock',{date:x.dataset.d});loadBlocks()})}
+$('#bGo').onclick=async()=>{const j=await api('block',{date:$('#bDate').value,reason:$('#bWhy').value});const m=$('#bMsg');m.className='msg'+(j.success?'':' err');m.textContent=j.success?j.message:(j.error||'Could not block.');if(j.success)loadBlocks()};
+boot();
+</script></body></html>

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Console Service – Book online</title>
+<meta name="description" content="Book a console service online: pick your console, a date and time, and where we meet.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e1a;--panel:#111830;--panel2:#172042;--line:#26335a;--text:#eef2fb;--mute:#93a0c2;--blue:#3b82ff;--x:#6ea0ff;--o:#ff6b7d;--sq:#ff9bd0;--tri:#5fe0a6;--bad:#ff7b88;
+--d:'Chakra Petch',system-ui,sans-serif;--b:'Figtree',system-ui,sans-serif;--r:10px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}html,body{overflow-x:clip}
+body{font:16px/1.55 var(--b);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--d);line-height:1.05;letter-spacing:-.01em}
+nav{position:sticky;top:0;z-index:20;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:62px}
+.brand{font-family:var(--d);font-weight:700;font-size:20px;letter-spacing:.01em}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--blue);background:var(--blue);color:#fff;padding:12px 22px;font-weight:600;border-radius:var(--r);text-decoration:none;transition:.15s}
+.btn:hover{background:transparent;color:#fff;border-color:var(--x)}
+.btn.ghost{background:transparent;border-color:var(--line)}.btn.ghost:hover{border-color:var(--x)}
+.btn.sm{padding:8px 14px;font-size:14px}.btn[disabled]{opacity:.35;pointer-events:none}
+/* hero */
+.hero{padding:70px 0 54px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(42px,6.4vw,84px);font-weight:700}
+.hero p{margin:22px 0 28px;color:var(--mute);font-size:18px;max-width:44ch}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.glyphs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.glyphs div{aspect-ratio:1;border:1px solid var(--line);border-radius:18px;background:var(--panel);display:grid;place-items:center;font:700 clamp(56px,9vw,104px)/1 var(--d)}
+.glyphs div:nth-child(1){color:var(--x)}.glyphs div:nth-child(2){color:var(--o)}.glyphs div:nth-child(3){color:var(--sq)}.glyphs div:nth-child(4){color:var(--tri)}
+/* booking */
+section.book{padding:30px 0 20px;border-top:1px solid var(--line)}
+.head{margin:30px 0 26px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.head h2{font-size:clamp(30px,4vw,46px)}.head p{color:var(--mute);max-width:42ch}
+.grid{display:grid;grid-template-columns:1fr 350px;gap:28px;align-items:start}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px;transition:opacity .2s}
+.step.locked{opacity:.4;pointer-events:none}
+.step h3{display:flex;align-items:center;gap:12px;font-size:22px;margin-bottom:4px}
+.step h3 i{font:700 26px/1 var(--d);font-style:normal;width:34px;text-align:center}
+.step .sub{color:var(--mute);font-size:14px;margin:0 0 16px 46px}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.opt{text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;transition:.15s}
+.opt:hover{border-color:var(--x)}
+.opt[aria-pressed=true]{border-color:var(--x);box-shadow:inset 0 0 0 1px var(--x);background:#1b2a5c}
+.opt b{display:block;font-family:var(--d);font-size:18px}.opt span{color:var(--mute);font-size:13px;display:block;margin:3px 0 8px}.opt em{font-style:normal;font-weight:600;color:var(--x)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:9px 18px;font-weight:600}
+.chip:hover:not([disabled]){border-color:var(--x)}.chip[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.chip[disabled]{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.chip small{display:block;font-size:11px;font-weight:500;color:var(--mute)}.chip[aria-pressed=true] small{color:#dbe7ff}
+.label{font-size:13px;font-weight:600;color:var(--mute);margin:16px 0 8px}
+/* drive bar */
+.drive{display:flex;gap:4px;margin-top:14px;height:10px}
+.drive i{flex:1;border-radius:3px;background:var(--line)}.drive i.on{background:var(--tri)}
+.dnote{font-size:13px;color:var(--mute);margin-top:6px}
+/* calendar */
+.cal{max-width:420px}
+.cal .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal .top b{font-family:var(--d);font-size:20px}
+.cal .nav{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel2)}
+.cal .nav[disabled]{opacity:.3}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow span{text-align:center;font-size:12px;color:var(--mute);padding:4px 0}
+.day{aspect-ratio:1;border:0;background:transparent;border-radius:10px;font-weight:600}
+.day:hover:not([disabled]){background:var(--panel2)}
+.day[disabled]{color:#4b587c;cursor:not-allowed}.day.full{text-decoration:line-through}
+.day.today{box-shadow:inset 0 0 0 1px var(--mute)}
+.day.sel{background:var(--blue);color:#fff}
+.msg{font-size:14px;min-height:20px;margin-top:10px}.msg.err{color:var(--bad)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.seg .opt b{font-size:16px}
+/* form */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form .full{grid-column:1/-1}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:5px}label span{font-weight:400;color:var(--mute)}
+input,select,textarea{width:100%;font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:12px 13px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--x);outline-offset:1px}
+textarea{min-height:76px;resize:vertical}.hp{position:absolute;left:-9999px}
+.shopbox{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:15px}
+/* summary */
+.sum{position:sticky;top:80px;background:var(--panel);border:1px solid var(--x);border-radius:14px;padding:22px}
+.sum h3{font-size:22px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.row span:first-child{color:var(--mute)}.row b{text-align:right;font-weight:600}
+.tot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 4px}.tot b{font:700 32px var(--d)}
+.note{font-size:13px;color:var(--mute);margin-bottom:14px}.sum .btn{width:100%}
+.done{text-align:center;padding:36px 20px}.done .ref{font:700 clamp(34px,6vw,54px) var(--d);letter-spacing:.04em;color:var(--tri);margin:10px 0}
+.done p{max-width:50ch;margin:0 auto 10px;color:var(--mute)}
+.info{padding:50px 0;border-top:1px solid var(--line);margin-top:24px}
+.info .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}.info h3{font-size:21px;margin-bottom:8px}.info li{color:var(--mute);font-size:15px;margin-left:18px}
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--mute);font-size:14px}footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.open{display:flex}
+.modal .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:440px;width:100%;padding:24px;max-height:90vh;overflow:auto}.modal h3{font-size:26px;margin-bottom:14px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600;border:1px solid var(--x);color:var(--x)}
+.badge.confirmed,.badge.completed{background:var(--tri);color:#04210f;border-color:var(--tri)}.badge.cancelled{color:var(--mute);border-color:var(--mute);text-decoration:line-through}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.glyphs{max-width:360px}.grid{grid-template-columns:1fr}.sum{position:static}.info .cols{grid-template-columns:1fr}}
+@media(max-width:520px){.form{grid-template-columns:1fr}.step .sub{margin-left:0}nav .hide-s{display:none}.opts{gap:8px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="brand" href="#top" id="brand" style="color:inherit;text-decoration:none">Console Service</a>
+<div><button class="btn ghost sm" id="openLookup">Find my booking</button> <a class="btn sm hide-s" href="#book">Book now</a></div></div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div><h1>Console service, on your schedule.</h1>
+  <p id="tag">Pick the day and time. We come to you, or you drop it off at the shop.</p>
+  <div class="cta"><a class="btn" href="#book">Book a service</a><a class="btn ghost" href="#how">How it works</a></div></div>
+  <div class="glyphs" aria-hidden="true"><div>✕</div><div>○</div><div>□</div><div>△</div></div>
+</div></header>
+
+<section class="book" id="book"><div class="wrap">
+ <div class="head"><h2>Book a service</h2><p>Takes about a minute. No payment online. You pay us when the work is done.</p></div>
+ <div class="grid">
+  <div id="flow">
+   <div class="step" id="st1"><h3><i style="color:var(--x)">✕</i>Service</h3><div class="sub">What do you need done?</div><div class="opts" id="svc"><p class="sub" style="margin:0">Loading…</p></div></div>
+   <div class="step locked" id="st2"><h3><i style="color:var(--o)">○</i>Your console</h3><div class="sub">Pick the model and its storage size.</div>
+     <div class="chips" id="cons"></div><div class="label" id="stLabel" hidden>Storage size</div><div class="chips" id="stor"></div>
+     <div class="drive" id="drive" hidden></div><div class="dnote" id="dnote"></div></div>
+   <div class="step locked" id="st3"><h3><i style="color:var(--sq)">□</i>Date and time</h3><div class="sub">Pick a day, then a time.</div>
+     <div class="cal" id="cal"></div><div class="label" id="tLabel" hidden>Time</div><div class="chips" id="slots"></div><div class="msg" id="calMsg"></div></div>
+   <div class="step locked" id="st4"><h3><i style="color:var(--tri)">△</i>Where</h3><div class="sub">We come to you, or you bring it to us.</div>
+     <div class="seg"><button class="opt" id="mHome" aria-pressed="true"><b>We come to you</b><span>Home visit</span></button><button class="opt" id="mShop" aria-pressed="false"><b>I'll drop it off</b><span>At the shop</span></button></div>
+     <div id="homeBox"><div class="form"><div class="full"><label for="fArea">Area</label><select id="fArea"></select></div>
+       <div class="full"><label for="fAddr">Street, barangay, house details</label><textarea id="fAddr" placeholder="e.g. 12 Rizal St., Brgy. San Pedro, Molo"></textarea></div>
+       <div class="full"><label for="fLand">Landmark <span>(optional)</span></label><input id="fLand" placeholder="Near a school, church, store…"></div></div></div>
+     <div id="shopBox" class="shopbox" hidden></div></div>
+   <div class="step locked" id="st5"><h3><i style="color:var(--text)">✓</i>Your details</h3><div class="sub">We use these only to confirm your booking.</div>
+     <form class="form" id="form" novalidate>
+      <div><label for="fName">Full name</label><input id="fName" autocomplete="name"></div>
+      <div><label for="fPhone">Mobile number</label><input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxxx"></div>
+      <div><label for="fEmail">Email <span>(optional)</span></label><input id="fEmail" type="email" autocomplete="email"></div>
+      <div><label for="fFb">Facebook name <span>(optional)</span></label><input id="fFb"></div>
+      <div class="full"><label for="fNotes">Notes <span>(optional)</span></label><textarea id="fNotes" placeholder="Anything we should know about the problem"></textarea></div>
+      <input class="hp" id="fWeb" tabindex="-1" autocomplete="off" aria-hidden="true"></form></div>
+  </div>
+  <aside class="sum" id="sum" aria-live="polite"><h3>Your booking</h3><div id="sumRows"></div>
+   <div class="tot"><span>Total</span><b id="sumTot">₱0</b></div><div class="note" id="sumNote"></div>
+   <div class="msg err" id="subMsg" role="alert"></div><button class="btn" id="submit" disabled>Request booking</button></aside>
+ </div>
+</div></section>
+
+<section class="info" id="how"><div class="wrap"><div class="cols">
+ <div><h3>How it works</h3><ul><li>Choose a service, your console, a day and a time.</li><li>You get a booking reference right away.</li><li>We message you to confirm.</li></ul></div>
+ <div><h3>Before we come</h3><ul><li>Keep the console and its power cable ready.</li><li>Back up anything you cannot lose.</li><li>Be reachable on the number you gave us.</li></ul></div>
+ <div><h3>Good to know</h3><ul><li>Pay after the work is done.</li><li>Cancel free from Find my booking, up to the day before.</li><li>Travel fee depends on your area.</li></ul></div>
+</div></div></section>
+<footer><div class="wrap"><span id="fShop">Console Service</span><span id="fFbk"></span></div></footer>
+
+<div class="modal" id="lookup" role="dialog" aria-modal="true" aria-labelledby="lkT"><div class="card">
+ <h3 id="lkT">Find my booking</h3>
+ <form id="lkForm" class="form" style="grid-template-columns:1fr"><div><label for="lkRef">Booking reference</label><input id="lkRef" placeholder="PS-ABC123" autocapitalize="characters"></div>
+ <div><label for="lkPhone">Mobile number used</label><input id="lkPhone" type="tel" inputmode="tel"></div><button class="btn" type="submit">Look up</button></form>
+ <div class="msg err" id="lkMsg"></div><div id="lkRes"></div><button class="btn ghost sm" id="lkClose" style="margin-top:16px">Close</button></div></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s),peso=n=>'₱'+Number(n).toLocaleString('en-PH');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad=n=>String(n).padStart(2,'0'),ymd=(y,m,d)=>y+'-'+pad(m+1)+'-'+pad(d);
+const parse=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d))};
+const fmt=s=>parse(s).toLocaleDateString('en-PH',{timeZone:'UTC',weekday:'short',month:'short',day:'numeric'});
+async function api(u,o){const r=await fetch(u,o);let j={};try{j=await r.json()}catch{}return j}
+const S={cfg:null,svc:null,con:null,stor:null,date:null,slot:null,mode:'home',days:{},month:null};
+
+async function init(){
+  const c=await api('/api/config');
+  if(!c.success){$('#svc').innerHTML='<p class="msg err">Could not load. Please refresh.</p>';return}
+  S.cfg=c;const t=parse(c.today);S.month={y:t.getUTCFullYear(),m:t.getUTCMonth()};
+  $('#brand').textContent=c.shop.name;$('#fShop').textContent=c.shop.name+' · '+c.shop.area;document.title=c.shop.name+' – Book online';
+  $('#tag').textContent=c.shop.tagline;
+  $('#fFbk').innerHTML=c.shop.facebook?'Facebook: <a href="'+esc(c.shop.facebook_url)+'" target="_blank" rel="noopener" style="color:inherit">'+esc(c.shop.facebook)+'</a>':'';
+  $('#shopBox').innerHTML='<b>Shop address</b><br>'+esc(c.shop.shop_address);
+  $('#svc').innerHTML=c.services.map(s=>`<button class="opt" data-id="${esc(s.id)}" aria-pressed="false"><b>${esc(s.name)}</b><span>${esc(s.description)}</span><em>${peso(s.price)}</em></button>`).join('');
+  document.querySelectorAll('#svc .opt').forEach(b=>b.onclick=()=>{S.svc=c.services.find(x=>x.id===b.dataset.id);document.querySelectorAll('#svc .opt').forEach(x=>x.setAttribute('aria-pressed',x===b));unlock('st2');summary()});
+  $('#cons').innerHTML=c.consoles.map(x=>`<button class="chip" data-id="${x.id}" aria-pressed="false">${esc(x.name)}</button>`).join('');
+  document.querySelectorAll('#cons .chip').forEach(b=>b.onclick=()=>pickCon(b.dataset.id));
+  $('#fArea').innerHTML='<option value="">Choose your area</option>'+c.areas.map(a=>`<option value="${a.id}">${esc(a.name)}${a.fee?' (+'+peso(a.fee)+')':' (no travel fee)'}</option>`).join('');
+  $('#fArea').onchange=summary;
+  $('#mHome').onclick=()=>setMode('home');$('#mShop').onclick=()=>setMode('shop');
+  const pr=new URLSearchParams(location.search).get('ref');if(pr){$('#lkRef').value=pr;openLookup()}
+  loadDays();summary();
+}
+function unlock(id){$('#'+id).classList.remove('locked')}
+function pickCon(id){
+  S.con=S.cfg.consoles.find(x=>x.id===id);S.stor=null;
+  document.querySelectorAll('#cons .chip').forEach(x=>x.setAttribute('aria-pressed',x.dataset.id===id));
+  $('#stLabel').hidden=false;
+  $('#stor').innerHTML=S.con.storage.map(s=>`<button class="chip" data-s="${esc(s)}" aria-pressed="false">${esc(s)}</button>`).join('');
+  document.querySelectorAll('#stor .chip').forEach(b=>b.onclick=()=>{S.stor=b.dataset.s;document.querySelectorAll('#stor .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));drive();unlock('st3');summary()});
+  if(S.con.storage.length===1){S.stor=S.con.storage[0];document.querySelector('#stor .chip').setAttribute('aria-pressed','true');drive();unlock('st3')}
+  else{$('#drive').hidden=true;$('#dnote').textContent=''}
+  summary();
+}
+function drive(){
+  const sizes=S.con.storage,i=sizes.indexOf(S.stor);const d=$('#drive');
+  if(i<0||sizes.length<2){d.hidden=true;$('#dnote').textContent=S.stor?'Storage: '+S.stor:'';return}
+  d.hidden=false;d.innerHTML=sizes.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('');$('#dnote').textContent='Storage: '+S.stor;
+}
+async function loadDays(){const j=await api('/api/availability');S.days=j.days||{};renderCal()}
+function renderCal(){
+  const {y,m}=S.month,first=new Date(Date.UTC(y,m,1)).getUTCDay(),dim=new Date(Date.UTC(y,m+1,0)).getUTCDate(),t=parse(S.cfg.today);
+  const canPrev=y>t.getUTCFullYear()||(y===t.getUTCFullYear()&&m>t.getUTCMonth());
+  let h=`<div class="top"><button class="nav" id="pm" aria-label="Previous month" ${canPrev?'':'disabled'}>‹</button><b>${new Date(Date.UTC(y,m,1)).toLocaleDateString('en-PH',{timeZone:'UTC',month:'long',year:'numeric'})}</b><button class="nav" id="nm" aria-label="Next month">›</button></div><div class="dow">${'SMTWTFS'.split('').map(d=>`<span>${d}</span>`).join('')}</div><div class="days">`;
+  for(let i=0;i<first;i++)h+='<span></span>';
+  for(let d=1;d<=dim;d++){
+    const s=ymd(y,m,d),row=S.days[s],known=!!row,open=known&&Object.values(row).some(v=>v>0);
+    let c='day';if(known&&!open&&s>=S.cfg.today)c+=' full';if(s===S.cfg.today)c+=' today';if(s===S.date)c+=' sel';
+    h+=`<button class="${c}" data-d="${s}" ${open?'':'disabled'} aria-label="${fmt(s)}${open?'':' not available'}">${d}</button>`;
+  }
+  $('#cal').innerHTML=h+'</div>';
+  $('#pm').onclick=()=>{S.month.m--;if(S.month.m<0){S.month.m=11;S.month.y--}renderCal()};
+  $('#nm').onclick=()=>{S.month.m++;if(S.month.m>11){S.month.m=0;S.month.y++}renderCal()};
+  document.querySelectorAll('.day').forEach(b=>b.onclick=()=>pickDay(b.dataset.d));
+}
+function pickDay(s){
+  S.date=s;S.slot=null;renderCal();$('#tLabel').hidden=false;const row=S.days[s];
+  $('#slots').innerHTML=S.cfg.slots.map(x=>{const left=row[x.id];return `<button class="chip" data-id="${x.id}" aria-pressed="false" ${left>0?'':'disabled'}>${esc(x.label)}<small>${left>0?left+' left':'Full'}</small></button>`}).join('');
+  document.querySelectorAll('#slots .chip').forEach(b=>b.onclick=()=>{S.slot=S.cfg.slots.find(x=>x.id===b.dataset.id);document.querySelectorAll('#slots .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));unlock('st4');unlock('st5');summary()});
+  summary();
+}
+function setMode(m){S.mode=m;$('#mHome').setAttribute('aria-pressed',m==='home');$('#mShop').setAttribute('aria-pressed',m==='shop');$('#homeBox').hidden=m!=='home';$('#shopBox').hidden=m!=='shop';summary()}
+function area(){return S.cfg&&S.cfg.areas.find(a=>a.id===$('#fArea').value)}
+function summary(){
+  if(!S.cfg)return;
+  const a=S.mode==='home'?area():null,fee=a?a.fee:0;let r='';const row=(x,y)=>r+=`<div class="row"><span>${x}</span><b>${y}</b></div>`;
+  row('Service',S.svc?esc(S.svc.name):'–');row('Console',S.con?esc(S.con.name)+(S.stor?' '+esc(S.stor):''):'–');
+  row('When',S.date?fmt(S.date)+(S.slot?', '+esc(S.slot.label):''):'–');row('Where',S.mode==='shop'?'Drop off at shop':(a?esc(a.name):'–'));
+  $('#sumRows').innerHTML=r;const ok=S.svc&&S.con&&S.stor&&S.date&&S.slot&&(S.mode==='shop'||a);
+  $('#sumTot').textContent=S.svc?peso(S.svc.price+fee):'₱0';
+  $('#sumNote').textContent=S.svc?(fee?'Includes a '+peso(fee)+' travel fee. ':'')+'Pay after the work is done.':'Pick a service to see the price.';
+  $('#submit').disabled=!ok;
+}
+$('#submit').onclick=async()=>{
+  const m=$('#subMsg');m.textContent='';const b=$('#submit');b.disabled=true;b.textContent='Sending…';
+  const j=await api('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    service_id:S.svc.id,console_id:S.con.id,storage:S.stor,date:S.date,slot_id:S.slot.id,mode:S.mode,area_id:$('#fArea').value,address:$('#fAddr').value,landmark:$('#fLand').value,
+    name:$('#fName').value,phone:$('#fPhone').value,email:$('#fEmail').value,facebook:$('#fFb').value,notes:$('#fNotes').value,website:$('#fWeb').value})});
+  b.textContent='Request booking';
+  if(!j.success){m.textContent=j.error||'Something went wrong. Please try again.';summary();if(/taken|not available/i.test(j.error||'')){await loadDays();S.slot=null;if(S.date)pickDay(S.date)}return}
+  const k=j.booking;
+  $('#flow').innerHTML=`<div class="step done"><h3 style="justify-content:center">Booking requested</h3><div style="color:var(--mute);margin-top:14px">Your reference</div><div class="ref">${esc(k.ref)}</div>
+   <p><b style="color:var(--text)">${esc(k.service_name||'')}</b> · ${esc(k.console_name||'')} ${esc(k.storage||'')}<br>${fmt(k.date||S.date)}, ${esc(k.time_label||'')}</p>
+   <p>We'll message you on your mobile number to confirm. Save this reference. You can check or cancel with <b style="color:var(--text)">Find my booking</b>.</p>
+   <p style="margin-top:18px"><button class="btn" onclick="location.href='/'">Book another</button></p></div>`;
+  $('#sum').style.display='none';$('.grid').style.gridTemplateColumns='1fr';$('#book').scrollIntoView({behavior:'smooth'});
+};
+function openLookup(){$('#lookup').classList.add('open');setTimeout(()=>$('#lkRef').focus(),50)}
+$('#openLookup').onclick=openLookup;$('#lkClose').onclick=()=>$('#lookup').classList.remove('open');
+$('#lookup').onclick=e=>{if(e.target.id==='lookup')$('#lookup').classList.remove('open')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#lookup').classList.remove('open')});
+$('#lkForm').onsubmit=async e=>{e.preventDefault();$('#lkMsg').textContent='';$('#lkRes').innerHTML='';
+  const j=await api('/api/bookings?ref='+encodeURIComponent($('#lkRef').value)+'&phone='+encodeURIComponent($('#lkPhone').value));
+  if(!j.success){$('#lkMsg').textContent=j.error||'Not found.';return}
+  const b=j.booking,can=['pending','confirmed'].includes(b.status);
+  $('#lkRes').innerHTML=`<div style="margin-top:14px"><div class="row"><span>Status</span><b><span class="badge ${b.status}">${b.status}</span></b></div><div class="row"><span>Service</span><b>${esc(b.service_name)}</b></div>
+   <div class="row"><span>Console</span><b>${esc(b.console_name)} ${esc(b.storage)}</b></div><div class="row"><span>When</span><b>${fmt(b.date)}, ${esc(b.time_label)}</b></div>
+   <div class="row"><span>Where</span><b>${b.mode==='shop'?'Drop off at shop':esc(b.address)}</b></div><div class="row"><span>Total</span><b>${peso(b.total)}</b></div>
+   ${can?'<button class="btn ghost sm" id="cx" style="margin-top:12px">Cancel booking</button>':''}</div>`;
+  const cx=$('#cx');if(cx)cx.onclick=async()=>{if(!confirm('Cancel booking '+b.ref+'?'))return;
+   const r=await api('/api/bookings?action=cancel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:b.ref,phone:$('#lkPhone').value})});
+   if(r.success)$('#lkRes').innerHTML='<p style="margin-top:14px"><b>Booking cancelled.</b></p>';else $('#lkMsg').textContent=r.error||'Could not cancel.'};
+};
+init();
+})();
+</script>
+</body>
+</html>
