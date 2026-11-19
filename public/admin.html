@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Admin</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>28 Monkey admin</title>
+<link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e1a;--panel:#111830;--panel2:#172042;--line:#26335a;--text:#eef2fb;--mute:#93a0c2;--blue:#3b82ff;--x:#6ea0ff;--tri:#5fe0a6;--bad:#ff7b88;--d:'Chakra Petch',system-ui,sans-serif;--b:'Figtree',system-ui,sans-serif}
+:root{--bg:#ffd400;--panel:#ffffff;--panel2:#fff4b8;--line:#111;--text:#111;--mute:#5a4c10;--blue:#e11d2e;--x:#e11d2e;--tri:#111;--bad:#b00020;--d:'Chakra Petch',system-ui,sans-serif;--b:'Figtree',system-ui,sans-serif}
 *{box-sizing:border-box;margin:0}body{font:15px/1.5 var(--b);color:var(--text);background:var(--bg)}
 button{font:inherit;color:inherit;cursor:pointer}:focus-visible{outline:3px solid #fff;outline-offset:2px}
 h2,h3{font-family:var(--d)}
@@ -21,14 +22,19 @@ header b{font:700 20px var(--d)}main{max-width:1180px;margin:0 auto;padding:22px
 .bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.bar>*{width:auto}.bar input{flex:1;min-width:180px}
 table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}th{font-size:12px;color:var(--mute)}
 a{color:var(--x)}.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--x);color:var(--x)}
-.badge.confirmed,.badge.completed{background:var(--tri);color:#04210f;border-color:var(--tri)}.badge.cancelled{color:var(--mute);border-color:var(--mute);text-decoration:line-through}
+.badge.confirmed,.badge.completed{background:var(--x);color:#1a1200;border-color:var(--x)}.badge.cancelled{color:var(--mute);border-color:var(--mute);text-decoration:line-through}
 .acts{display:flex;gap:6px;flex-wrap:wrap}.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px}
 .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.msg{min-height:20px;font-size:14px;margin:8px 0;color:var(--tri)}.msg.err{color:var(--bad)}.empty{padding:30px;text-align:center;color:var(--mute)}
 @media(max-width:760px){table,thead,tbody,tr,td{display:block}thead{display:none}tr{border:1px solid var(--line);border-radius:8px;margin-bottom:10px;padding:6px}td{border:0;padding:4px 8px}}
+.btn{color:#fff;border-color:#111;box-shadow:2px 2px 0 #111}.btn:hover{background:#fff;color:#111}.btn.ghost{background:#fff;color:#111}.btn.red{background:#fff;color:#b00020;border-color:#b00020}.btn.red:hover{background:#b00020;color:#fff}
+header{border-bottom:3px solid #111}.card,.stat{background:#fff;border:2.5px solid #111;box-shadow:4px 4px 0 #111}
+input,select,textarea{border:2px solid #111;color:#111}.tabs button{background:#fff;border:2px solid #111;color:#111}.tabs button[aria-selected=true]{background:#e11d2e;color:#fff}
+th,label{color:#5a4c10}td{border-bottom:1px solid #d9c55a}a{color:#b00020}.badge{border-color:#e11d2e;color:#e11d2e}.badge.confirmed,.badge.completed{background:#111;color:#ffd400;border-color:#111}
+.msg{color:#111;font-weight:600}.msg.err{color:#b00020}.empty{color:#5a4c10}
 </style></head><body>
-<div id="login" hidden><h2>Admin</h2><form id="lf"><input id="pw" type="password" placeholder="Password" autocomplete="current-password" required><button class="btn" style="width:100%">Log in</button></form><div class="msg err" id="lm"></div></div>
+<div id="login" hidden><img src="img/logo-28monkey.svg" alt="28 Monkey" style="width:260px;max-width:90%;margin:0 auto 14px;display:block"><h2>Admin</h2><form id="lf"><input id="pw" type="password" placeholder="Password" autocomplete="current-password" required><button class="btn" style="width:100%">Log in</button></form><div class="msg err" id="lm"></div></div>
 <div id="app" hidden>
-<header><b>Bookings admin</b><div><a class="btn ghost sm" href="/" style="text-decoration:none;color:inherit">View site</a> <button class="btn sm" id="out">Log out</button></div></header>
+<header><span style="display:flex;align-items:center;gap:10px"><img src="img/logo-mark.svg" alt="" style="height:40px;width:40px"><b>28 Monkey admin</b></span><div><a class="btn ghost sm" href="/" style="text-decoration:none;color:inherit">View site</a> <button class="btn sm" id="out">Log out</button></div></header>
 <main>
 <div class="tabs" role="tablist"><button role="tab" data-t="bk" aria-selected="true">Bookings</button><button role="tab" data-t="add" aria-selected="false">Add booking</button><button role="tab" data-t="sv" aria-selected="false">Services &amp; prices</button><button role="tab" data-t="bl" aria-selected="false">Days off</button></div>
 <div id="t-bk"><div class="stats" id="stats"></div>
