@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Console Service – Book online</title>
+<title>28 Monkey – Book online</title>
 <meta name="description" content="Book a console service online: pick your console, a date and time, and where we meet.">
+<link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -170,11 +171,11 @@ input:focus,select:focus,textarea:focus{outline:3px solid #e11d2e;outline-offset
 <symbol id="s-sq" viewBox="0 0 100 100"><rect x="22" y="22" width="56" height="56" rx="3" stroke="#111" stroke-width="14" fill="none"/></symbol>
 <symbol id="s-tri" viewBox="0 0 100 100"><path d="M50 18L84 76H16Z" stroke="#e11d2e" stroke-width="14" stroke-linejoin="round" fill="none"/></symbol>
 </defs></svg>
-<nav><div class="wrap"><a class="brand" href="#top" id="brand" style="color:inherit;text-decoration:none">Console Service</a>
+<nav><div class="wrap"><a class="brand" href="#top" id="brand" aria-label="28 Monkey" style="display:block;line-height:0"><img src="img/logo-28monkey.svg" alt="28 Monkey" style="height:46px;width:auto;display:block"></a>
 <div><button class="btn ghost sm" id="openLookup">Find my booking</button> <a class="btn sm hide-s" href="#book">Book now</a></div></div></nav>
 
 <header class="hero" id="top"><div class="wrap">
-  <div><h1>Console service, on your schedule.</h1>
+  <div><img src="img/logo-28monkey.svg" alt="28 Monkey" style="width:min(300px,75%);height:auto;display:block;margin-bottom:24px;filter:drop-shadow(5px 5px 0 #111)"><h1>Console service, on your schedule.</h1>
   <p id="tag">Pick the day and time. We come to you, or you drop it off at the shop.</p>
   <div class="cta"><a class="btn" href="#book">Book a service</a><a class="btn ghost" href="#how">How it works</a></div></div>
   <div class="cast" aria-hidden="true"><div><svg><use href="#c-bot"/></svg></div><div class="r"><svg><use href="#c-blob"/></svg></div><div class="r"><svg><use href="#c-cat"/></svg></div><div><svg><use href="#c-rocket"/></svg></div></div>
@@ -231,7 +232,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #e11d2e;outline-offset
  <div><h3>Before we come</h3><ul><li>Keep the console and its power cable ready.</li><li>Back up anything you cannot lose.</li><li>Be reachable on the number you gave us.</li></ul></div>
  <div><h3>Good to know</h3><ul><li>Pay after the work is done.</li><li>Cancel free from Find my booking, up to the day before.</li><li>Travel fee depends on your area.</li></ul></div>
 </div></div></section>
-<footer><div class="wrap"><span id="fShop">Console Service</span><span id="fFbk"></span></div></footer>
+<footer><div class="wrap"><span style="display:flex;align-items:center;gap:14px"><img src="img/logo-mark.svg" alt="" style="height:52px;width:52px"><span id="fShop">28 Monkey</span></span><span id="fFbk"></span></div></footer>
 
 <div class="modal" id="lookup" role="dialog" aria-modal="true" aria-labelledby="lkT"><div class="card">
  <h3 id="lkT">Find my booking</h3>
@@ -253,7 +254,7 @@ async function init(){
   const c=await api('/api/config');
   if(!c.success){$('#svc').innerHTML='<p class="msg err">Could not load. Please refresh.</p>';return}
   S.cfg=c;const t=parse(c.today);S.month={y:t.getUTCFullYear(),m:t.getUTCMonth()};
-  $('#brand').textContent=c.shop.name;$('#fShop').textContent=c.shop.name+' · '+c.shop.area;document.title=c.shop.name+' – Book online';
+  $('#brand').setAttribute('aria-label',c.shop.name);$('#fShop').textContent=c.shop.name+' · '+c.shop.area;document.title=c.shop.name+' – Book online';
   $('#tag').textContent=c.shop.tagline;
   $('#fFbk').innerHTML=c.shop.facebook?'Facebook: <a href="'+esc(c.shop.facebook_url)+'" target="_blank" rel="noopener" style="color:inherit">'+esc(c.shop.facebook)+'</a>':'';
   $('#shopBox').innerHTML='<b>Shop address</b><br>'+esc(c.shop.shop_address);
